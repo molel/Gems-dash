@@ -1,4 +1,3 @@
-# Gems-dush
 package sample;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -12,7 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 public class Controller {
-    public static int Score = 0, nasti = -1, nastj = -1, nasti2, nastj2, anlz = 0, numberOfBombs = 0, numberOfGems = 0;
+    public static int Score = 145000, nasti = -1, nastj = -1, nasti2, nastj2, anlz = 0, numberOfBombs = 0, numberOfGems = 100;
     public static boolean opportunity = false, opportunity2 = true, ex = false, opportunity3 = true, s = true;
     public static Stone[][] stones = new Stone[6][6];
 
@@ -43,82 +42,86 @@ public class Controller {
     @FXML
     public void s(MouseEvent event) {
         try {
-            if (stones[0][0] != null) {
-                GraphicsContext graphicsContext = can.getGraphicsContext2D();
-                if (event.getSceneX() >= 49 && event.getSceneX() <= 49 + 98 && event.getSceneY() >= 15 && event.getSceneY() <= 15 + 46) {
-                    numberOfGems = 0;
-                    numberOfBombs = 0;
-                    Score = 0;
-                    destroying2(graphicsContext);
-                }
-                if (event.getSceneX() >= 75 && event.getSceneX() <= 125 && event.getSceneY() >= 125 && event.getSceneY() <= 175) {
-                    ex = true;
-                }
-                if (event.getSceneX() >= 75 && event.getSceneX() <= 125 && event.getSceneY() >= 185 && event.getSceneY() <= 235 && numberOfGems > 0) {
-                    destroying(graphicsContext);
-                }
-                if (event.getSceneX() > 200) {
-                    if (nasti == -1 && nastj == -1) {
-                        nasti = Math.toIntExact(Math.round(((event.getSceneX() - 200) - (event.getSceneX() - 200) % 50) / 50));
-                        nastj = Math.toIntExact(Math.round((event.getSceneY() - event.getSceneY() % 50) / 50));
-                        graphicsContext.strokeRect(nasti * 50 + 2, nastj * 50 + 2, 46, 46);
-                        if (ex && numberOfBombs > 0) {
-                            explosion(graphicsContext, nasti, nastj);
-                        }
-                    } else {
-                        nasti2 = Math.toIntExact(Math.round(((event.getSceneX() - 200) - (event.getSceneX() - 200) % 50) / 50));
-                        nastj2 = Math.toIntExact(Math.round((event.getSceneY() - event.getSceneY() % 50) / 50));
-                        int F = Math.abs(nasti - nasti2) + Math.abs(nastj - nastj2);
-                        if (F == 1 && stones[nasti][nastj].name.equals(stones[nasti2][nastj2]) == false) {
-                            exchange(nasti, nastj, nasti2, nastj2, graphicsContext);
-                            Stone localStone = stones[nasti][nastj];
-                            stones[nasti][nastj] = stones[nasti2][nastj2];
-                            stones[nasti2][nastj2] = localStone;
-                            draw(nasti, nastj, graphicsContext);
-                            draw(nasti2, nastj2, graphicsContext);
-                            search(graphicsContext);
-                            if (anlz == 0) {
-                                Stone[] localStone1 = new Stone[]{stones[nasti][nastj]};
-                                stones[nasti][nastj] = stones[nasti2][nastj2];
-                                stones[nasti2][nastj2] = localStone1[0];
-                                int[] a = new int[]{nasti, nastj, nasti2, nastj2};
-                                Timeline timeline = new Timeline(
-                                        new
-                                                KeyFrame(
-                                                Duration.millis(400),
-                                                ae -> {
-                                                    exchange(a[0], a[1], a[2], a[3], graphicsContext);
-                                                }
-                                        )
-                                );
-                                timeline.setCycleCount(1);
-                                timeline.play();
-                                Timeline timeline1 = new Timeline(
-                                        new
-                                                KeyFrame(
-                                                Duration.millis(530),
-                                                ae1 -> {
-                                                    draw(a[0], a[1], graphicsContext);
-                                                    draw(a[2], a[3], graphicsContext);
-                                                }
-                                        )
-                                );
-                                timeline1.setCycleCount(1);
-                                timeline1.play();
-                                exchange(a[2], a[3], a[0], a[1], graphicsContext);
+            if (Score < 150000) {
+                if (stones[0][0] != null) {
+                    GraphicsContext graphicsContext = can.getGraphicsContext2D();
+                    if (event.getSceneX() >= 49 && event.getSceneX() <= 49 + 98 && event.getSceneY() >= 15 && event.getSceneY() <= 15 + 46) {
+                        numberOfGems = 0;
+                        numberOfBombs = 0;
+                        Score = 0;
+                        destroying2(graphicsContext);
+                    }
+                    if (event.getSceneX() >= 75 && event.getSceneX() <= 125 && event.getSceneY() >= 125 && event.getSceneY() <= 175) {
+                        ex = true;
+                    }
+                    if (event.getSceneX() >= 75 && event.getSceneX() <= 125 && event.getSceneY() >= 185 && event.getSceneY() <= 235 && numberOfGems > 0) {
+                        destroying(graphicsContext);
+                    }
+                    if (event.getSceneX() > 200) {
+                        if (nasti == -1 && nastj == -1) {
+                            nasti = Math.toIntExact(Math.round(((event.getSceneX() - 200) - (event.getSceneX() - 200) % 50) / 50));
+                            nastj = Math.toIntExact(Math.round((event.getSceneY() - event.getSceneY() % 50) / 50));
+                            graphicsContext.strokeRect(nasti * 50 + 2, nastj * 50 + 2, 46, 46);
+                            if (ex && numberOfBombs > 0) {
+                                explosion(graphicsContext, nasti, nastj);
                             }
-                            nasti = -1;
-                            nastj = -1;
                         } else {
-                            if (F > 1) {
+                            nasti2 = Math.toIntExact(Math.round(((event.getSceneX() - 200) - (event.getSceneX() - 200) % 50) / 50));
+                            nastj2 = Math.toIntExact(Math.round((event.getSceneY() - event.getSceneY() % 50) / 50));
+                            int F = Math.abs(nasti - nasti2) + Math.abs(nastj - nastj2);
+                            if (F == 1 && stones[nasti][nastj].name.equals(stones[nasti2][nastj2]) == false) {
+                                exchange(nasti, nastj, nasti2, nastj2, graphicsContext);
+                                Stone localStone = stones[nasti][nastj];
+                                stones[nasti][nastj] = stones[nasti2][nastj2];
+                                stones[nasti2][nastj2] = localStone;
                                 draw(nasti, nastj, graphicsContext);
-                                nasti = nasti2;
-                                nastj = nastj2;
-                                graphicsContext.strokeRect(nasti * 50 + 2, nastj * 50 + 2, 46, 46);
+                                draw(nasti2, nastj2, graphicsContext);
+                                search(graphicsContext);
+                                if (anlz == 0) {
+                                    Stone[] localStone1 = new Stone[]{stones[nasti][nastj]};
+                                    stones[nasti][nastj] = stones[nasti2][nastj2];
+                                    stones[nasti2][nastj2] = localStone1[0];
+                                    int[] a = new int[]{nasti, nastj, nasti2, nastj2};
+                                    Timeline timeline = new Timeline(
+                                            new
+                                                    KeyFrame(
+                                                    Duration.millis(400),
+                                                    ae -> {
+                                                        exchange(a[0], a[1], a[2], a[3], graphicsContext);
+                                                    }
+                                            )
+                                    );
+                                    timeline.setCycleCount(1);
+                                    timeline.play();
+                                    Timeline timeline1 = new Timeline(
+                                            new
+                                                    KeyFrame(
+                                                    Duration.millis(530),
+                                                    ae1 -> {
+                                                        draw(a[0], a[1], graphicsContext);
+                                                        draw(a[2], a[3], graphicsContext);
+                                                    }
+                                            )
+                                    );
+                                    timeline1.setCycleCount(1);
+                                    timeline1.play();
+                                    exchange(a[2], a[3], a[0], a[1], graphicsContext);
+                                }
+                                nasti = -1;
+                                nastj = -1;
+                            } else {
+                                if (F > 1) {
+                                    draw(nasti, nastj, graphicsContext);
+                                    nasti = nasti2;
+                                    nastj = nastj2;
+                                    graphicsContext.strokeRect(nasti * 50 + 2, nastj * 50 + 2, 46, 46);
+                                }
                             }
                         }
                     }
                 }
+            } else {
+                can.getGraphicsContext2D().drawImage(new Image(getClass().getResourceAsStream("win.jpg")), 20, 100);
             }
         } catch (Exception w) {
             System.out.print("!");
@@ -195,6 +198,9 @@ public class Controller {
         );
         timeline.setCycleCount(1);
         timeline.play();
+        if (Score >= 150000) {
+            can.getGraphicsContext2D().drawImage(new Image(getClass().getResourceAsStream("win.jpg")), 20, 100);
+        }
     }
 
     @FXML
@@ -248,6 +254,9 @@ public class Controller {
         nasti = -1;
         nastj = -1;
         Score += 9 * 15;
+        if (Score >= 150000) {
+            can.getGraphicsContext2D().drawImage(new Image(getClass().getResourceAsStream("win.jpg")), 20, 100);
+        }
     }
 
     @FXML
@@ -650,6 +659,9 @@ public class Controller {
         can2.getGraphicsContext2D().drawImage(new Image(getClass().getResourceAsStream("gem.jpg")), 75, 185);
         can2.getGraphicsContext2D().fillText("x" + Integer.toString(numberOfGems), 125, 215);
         can2.getGraphicsContext2D().drawImage(new Image(getClass().getResourceAsStream("restart.jpg")), 49, 15);
+        if (Score >= 150000) {
+            can.getGraphicsContext2D().drawImage(new Image(getClass().getResourceAsStream("win.jpg")), 20, 100);
+        }
     }
 
     @FXML
