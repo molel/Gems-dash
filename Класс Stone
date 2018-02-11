@@ -1,0 +1,10 @@
+package sample;
+public class Stone {
+    public String name;
+    public boolean crowd;
+
+    public Stone(String _name) {
+        name = _name;
+        crowd = false;
+    }
+}
